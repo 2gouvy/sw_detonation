@@ -13,7 +13,7 @@ plotPolar(M1,gamma,ny) %plotting incident polar
 delta1=atan(sqrt(tanDefSq(xi1,M1,gamma))); %deflection...
     %... after incident shock
 M2=sqrt(postShockMachSq(xi1,M1,gamma)); %Mach post-incident
-plotPolar(M2,gamma,ny,2,xi1,delta1) %reflected polar
+plotPolar(M2,gamma,ny,2,xi1,delta1); %reflected polar
 
 %plot description and legend
 title("Shock polars")

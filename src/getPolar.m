@@ -1,21 +1,23 @@
-function [xi_plot,delta_plot]=plotPolar(M1,gamma,ny,varargin)
-%Plots shock polar
+function [xis,deltas]=getPolar(M1,gamma,ny,varargin)
+%Computes shock polar
 %Inputs:
     %ny: number of values on y-axis
     %mode: first varargin
         %There are multiple modes for the function:
-            %0, default: normal plot of one polar
+            %0, default: calcultes usual, polar
             %1: choosing xi_lim, instead of taking the usual maximum xi...
-                %... for polar plot y-axis boundary
-                %xi_lim=varargin{2}: new xi plot limit
-            %2: ploting polar as second deviation
+                %... for y-axis boundary
+                %xi_lim=varargin{2}: new xi limit
+            %2: calculating polar as second deviation without changing
                 %prev_xi: pressure ratio from previous shock, if any,...
                     %...entered in second varargin
                 %prev_dev: deviation in previous shock, if any,...
                     %...entered in third varargin
+                %xi_lim: optional argument, 4th varargin...
+                    %... new xi limit
 %Outputs:
-    %xi_plot: xi-coordinates of polar points
-    %delta_plot: delta-coordinates of polar points (radian)
+    %xis: xi-coordinates of polar points
+    %deltas: delta-coordinates of polar points (radian)
 gamma;
 M1;
 xi_lim=xiLim(M1,gamma); %max value of xi in shock polar
@@ -29,8 +31,9 @@ if nargin>=4
     elseif mode==2
        prev_xi=varargin{2};
        prev_dev=varargin{3};
-       hold on
-       plot([0,0],[1,2],'--')
+       if nargin==7;
+           xi_lim=varargin{4};
+       end
     end
 end
 if mode ~= 2
@@ -43,7 +46,7 @@ xi_log_plot_step=(xi_lim)^(1/ny);
 xi_axis=xi_log_plot_step.^(0:ny);%log-scale xi points
 xi_axis(end)=xi_lim;
 
-%polar plot
+%polar calculation
 delta_pos=zeros(1,ny+1);
 for i=1:ny+1
     delta_pos(i)=atan(sqrt(tanDefSq(xi_axis(i),M1,gamma)));
@@ -52,8 +55,6 @@ for i=1:ny+1
     %end
 end %calculate corresponding deviation angles for xi
 delta_neg=flip(-delta_pos); %calculate corresponding negative angles
-delta_plot=[delta_neg,delta_pos]+prev_dev;
-xi_plot=prev_xi*[flip(xi_axis),xi_axis];
-hold on
-semilogy(delta_plot,xi_plot,'-')% plot full polar
+deltas=[delta_neg,delta_pos]+prev_dev;
+xis=prev_xi*[flip(xi_axis),xi_axis];
 end

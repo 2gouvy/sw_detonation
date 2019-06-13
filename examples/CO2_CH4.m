@@ -34,7 +34,7 @@ semilogy([-1.1*deltai,1.1*deltai],[xi,xi],'--')
 %plot reflected shock polar
 hold on
 Mr=sqrt(postShockMachSq(xi,Mi,gamma_CO2));
-plotPolar(Mr,gamma_CO2,ny,2,xi,deltai)
+plotPolar(Mr,gamma_CO2,ny,2,xi,deltai);
 
 %adding legend and setting window limits
 legend('Incident CO2 polar','Transmited CH4 polar',...
