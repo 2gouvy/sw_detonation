@@ -30,7 +30,7 @@ if nargin>=4
        prev_xi=varargin{2};
        prev_dev=varargin{3};
        hold on
-       plot([0,0],[1,2],'--')
+       semilogy([0,0],[1,2],'--')
     end
 end
 if mode ~= 2
