@@ -8,7 +8,7 @@ function is_sf_strong_RRE=isSfStrongRRE(xi,omega_rad,gamma_I,gamma_II,...
       %mu_I, mu_II: molecular weighs of each phase
       %ny_exp: number of points on xi axis when computing polars
     %Output:
-      is_sf_strong_RRE: bool. true if RRE, false if not
+      %is_sf_strong_RRE: bool. true if RRE, false if not
     Msh=sqrt(xiToSqMach(xi,gamma_I,pi/2)); %computing incident shock Mach
     Mi=Msh/sin(omega_rad); %computing incident free-stream Mach
     Mt=sqrt((gamma_I*mu_II)/(gamma_II*mu_I))*Mi; %transmitted free-stream Mach

@@ -25,16 +25,17 @@ else
     [r_xis,r_deltas]=getPolar(Mr,gamma_I,ny,2,xi,deltai,max_t_xi);
     %looking for points from reflected polar inside transmitted
     i=ny+1;
-    t_xi=t_xis(i);
-    t_delta=t_deltas(i);
+    t_xi=t_xis(i);t_delta=t_deltas(i);
     [xi_coors,delta_coors,ind]=getPolarPoint(r_xis,r_deltas,0,t_xi);
-    r_xi=xi_coors(1);r_delta=delta_coors(1);
+    r_xi=xi_coors(1)
+    r_delta=delta_coors(1);
     while (r_xi~=-1) && (r_delta>t_delta)
         i=i+1;
         t_xi=t_xis(i);
         t_delta=t_deltas(i);
         [xi_coors,delta_coors,ind]=getPolarPoint(r_xis,r_deltas,0,t_xi);
-        r_xi=xi_coors(1);r_delta=delta_coors(1);
+        r_xi=xi_coors(1);
+        r_delta=delta_coors(1);
     end
     if r_xi==-1
         is_sf_RR=false;
