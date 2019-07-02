@@ -1,16 +1,30 @@
 function [before_transition,Msj]=isBeforeFPRToTNR(xi_i,omega_rad,gamma_I,...
     gamma_II,mu_I,mu_II,ny,varargin)
+    %Determines if FPR to TNR transition was made
+    %Inputs:
+        %xi_i: incident shock wave pressure jump
+        %omega_rad: angle of incidence (rad)
+        %gamma_I, gamma_II: ratios of constant heat
+        %mus: molecular masses
+        %ny: xi-axis resolution when getting polars
+        %vargain{1}, solve_Msj_eq: bool determining if Msj 
+            %... equation needs to be solved or not, used to reduce...
+            %... computation time
+        %varargin{2}, Msj: Msj value, used if solve_Msj_eq==false
+        %varargin{3}, temp_ratio: ratio of temperatures=T_I/T_II
     solve_Msj_eq=true;
+    temp_ratio=1;
     if nargin>=8
         solve_Msj_eq=varargin{1};
+        if nargin>=10
+            temp_ratio=varargin{3};
+        end
     end
-    %Determines if FPR to TNR transition was made
-    %variables: xi_i,omega_rad,gammas,mus,ny
     Msi=sqrt(xiToSqMach(xi_i,gamma_I,pi/2)); %incident shock Mach
     M1i=Msi/sin(omega_rad); %incident free stream Mach
 
-    c=(gamma_II+1)/(gamma_I+1)*sqrt((gamma_I*mu_II)/(gamma_II*mu_I))...
-        *(Msi^2-1)/Msi;
+    c=(gamma_II+1)/(gamma_I+1)*sqrt(temp_ratio*(gamma_I*mu_II)...
+        /(gamma_II*mu_I))*(Msi^2-1)/Msi;
     Mst=1/2*(c+sqrt(c^2+4)); %transmitted shock Mach
     xi_t=((1-gamma_II)+2*gamma_II*Mst^2)/(1+gamma_II); %transmitted pressure...
         %...jump

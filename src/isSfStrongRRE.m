@@ -1,5 +1,5 @@
 function is_sf_strong_RRE=isSfStrongRRE(xi,omega_rad,gamma_I,gamma_II,...
-        mu_I,mu_II,ny_exp)
+        mu_I,mu_II,ny_exp,varargin)
     %Determines if system is RRE with graphical resolution
     %Inputs:
       %xi: incident pressure jump
@@ -7,11 +7,16 @@ function is_sf_strong_RRE=isSfStrongRRE(xi,omega_rad,gamma_I,gamma_II,...
       %gamma_I, gamma_II: ratios of specific heats for each phase
       %mu_I, mu_II: molecular weighs of each phase
       %ny_exp: number of points on xi axis when computing polars
+      %varargin{1}: temperature ratio T_I/T_II
     %Output:
       %is_sf_strong_RRE: bool. true if RRE, false if not
+    temp_ratio=1;
+    if nargin==8
+        temp_ratio=varargin{1};
+    end
     Msh=sqrt(xiToSqMach(xi,gamma_I,pi/2)); %computing incident shock Mach
     Mi=Msh/sin(omega_rad); %computing incident free-stream Mach
-    Mt=sqrt((gamma_I*mu_II)/(gamma_II*mu_I))*Mi; %transmitted free-stream Mach
+    Mt=sqrt(temp_ratio*(gamma_I*mu_II)/(gamma_II*mu_I))*Mi; %transmitted free-stream Mach
     t_xi_delta_max=xiDeltaMax(Mt,gamma_II); %xi value at maximum deviation for ...
       %... transmitted wave polar
     t_delta_max=atan(sqrt(tanDefSq(t_xi_delta_max,Mt,gamma_II))); %maximum deviation...
