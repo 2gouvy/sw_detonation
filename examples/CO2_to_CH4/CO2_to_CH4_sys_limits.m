@@ -77,7 +77,7 @@ limits_computation_time=cputime;%initialising timer for computation time
     rrr_bpr_boundary_precision=.01; %omega precision, dichtomy termination...
         %...threshold
 
-    chis_RRR_BPR=linspace(.52,1,nchis);%chi coordinates
+    chis_RRR_BPR=linspace(.42,1,nchis);%chi coordinates
     omegas_RRR_BPR=zeros(1,nchis);%pre-allocated omega coordinates
     for i=1:nchis
         omega_inf=0;omega_sup=90;%initial dichotomy bounds
@@ -111,13 +111,13 @@ limits_computation_time=cputime;%initialising timer for computation time
     end
 
 %Computes TNR<->LSR limit
-    %Principle: Solves the Mt=1 equation
+    %Principle: Solves the Mr=1 equation
     npts=400; %number of points on chi axis
     chis_TNR_LSR=linspace(0,1,npts);
     omegas_TNR_LSR=zeros(1,npts);
     syms omega
     for i=2:npts
-        %solving Mt=1 equation at specific omega
+        %solving Mr=1 equation at specific omega
         xi=1/chis_TNR_LSR(i);
         eqn = postShockMachSq(xi,sqrt(xiToSqMach(xi,gamma_CO2,omega)),gamma_CO2)==1;
         a=[vpasolve(eqn,omega,[0,pi/2])];
@@ -212,17 +212,18 @@ for i=1:no_read_lines
     plot(points(2*i-1,2:no_read_points+1),points(2*i,2:no_read_points+1),[cols(i) 'o']);
     %ploting article data
 end
-vw_art_ang=[27,32.06,33.27,34.39,38,49,65];
+
+vw_art_ang=[27,32.06,33.27,34.49,38,46];
 n_vw_art_ang=length(vw_art_ang);
 scatter(vw_art_ang,.78*ones(1,n_vw_art_ang),'<')
-w_art_ang=[50.5,62];
+w_art_ang=[50.5,55];
 n_w_art_ang=length(w_art_ang);
 scatter(w_art_ang,.53*ones(1,n_w_art_ang),'^')
-s_art_ang=[30,46,66];
+s_art_ang=[30,46,58];
 n_s_art_ang=length(s_art_ang);
 scatter(s_art_ang,.18*ones(1,n_s_art_ang),'>')
 ltxt=sprintf(...
-"RRE->Intromission->RRR->Shock critical\n->BPR->FPR->FNR from Nourgaliev fem sims");
+"RRE->Intromission->RRR->Shock critical\n->BPR->FPR from Nourgaliev et al. fem sims");
 legends={"RRE<->RRR (analytical resolution)",...
     "RRE->... (graphical resolution)",...
     "RRR<->BPR","BPR<->FNR","FPR<->TNR",...
@@ -232,11 +233,11 @@ legends={"RRE<->RRR (analytical resolution)",...
     "BPR<->FNR article boundary points",...
     "FPR<->TNR article boundary points",...
     "TNR<->LSR article boundary points",ltxt,...
-    "TRR->TNR from Nourgaliev sims",...
-    "RRE->BPR->TMR from Nourgaliev fems sims"};
+    "TRR->TNR from Nourgaliev et al. sims",...
+    "RRE->BPR->TMR from Nourgaliev et al. fems sims"};
 
 legend(legends,'Location','eastoutside')
-xlabel("\omega (deg)")
+xlabel("$\omega_i$ (deg)",'interpreter','latex')
 ylabel("\chi")
 title("Computed boundaries for CO2->CH4 refraction")
 xlim([25,90])

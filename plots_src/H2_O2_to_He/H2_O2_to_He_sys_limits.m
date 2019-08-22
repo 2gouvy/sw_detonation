@@ -21,9 +21,9 @@ limits_computation_time=cputime;%initialising timer for computation time
     mu_I=2/3*2+1/3*16;
     mu_II=4;
     %phase temperatures (K):
-    T_0,I=298;
-    T_0,II=1138;
-    temp_ratio=T_0,I/T_0,II;
+    T_0_I=298;
+    T_0_II=1138;
+    temp_ratio=T_0_I/T_0_II;
 
 %Computing RRE<->... limit with graphical method:
     %Principle: Doing a dichotomy on "isSfStrongRRE" function to find omega...
@@ -117,9 +117,9 @@ limits_computation_time=cputime;%initialising timer for computation time
     %... with a dichotomy on isBeforeFPRToTNR at constant chi
 txt="Computing FPR-TNR boundary, this may take a while";
 txt
-nchis_tnr=100; %number of points on chi axis
+nchis_tnr=200; %number of points on chi axis
 nys_tnr=30; %number of points in computed polars
-chis_FPR_TNR=linspace(.34,1,nchis_tnr); %chi values
+chis_FPR_TNR=linspace(1e-5,1,nchis_tnr); %chi values
 omegas_FPR_TNR=zeros(1,nchis_tnr);%pre-allocated omega array
 Msj=0; %j-wave Mach initialization
 fpr_tnr_boundary_precision=.01; %dichotomy termination threshold
@@ -155,7 +155,7 @@ plot(omegas_RRR_BPR,chis_RRR_BPR) %ploting RRR<->BPR limit
 hold on
 plot(omegas_BPR_FNR,chis_BPR_FNR) %ploting BPR<->FNR lim
 hold on
-plot(omegas_FPR_TNR,chis_FPR_TNR) %ploting FPR<->TNR lim
+plot(omegas_FPR_TNR(10:end),chis_FPR_TNR(10:end)) %ploting FPR<->TNR lim
 hold on
 plot(omegas_TNR_LSR(2:end),chis_TNR_LSR(2:end))  %ploting TNR<->LSR lim
 legends={"RRE->... (graphical resolution)",...
@@ -163,7 +163,7 @@ legends={"RRE->... (graphical resolution)",...
     "TNR<->LSR"};
 
 legend(legends,'Location','eastoutside')
-xlabel("\omega (deg)")
+xlabel("$\omega_i$ (deg)",'interpreter','latex')
 ylabel("\chi")
 title(['Computed boundaries for slow-fast ' name_I '->' name_II ' refraction'])
 xlim([15,90])

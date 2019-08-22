@@ -11,6 +11,7 @@
     mu_CH4=16.04;
 
 %incident shock properties
+figure
 chi=.78; %(pre-shock pressure)/(post-shock pressure)
 xi=1/chi; %corresponds to usual p2/p1 for stationary shock
 Msh=sqrt(xiToSqMach(xi,gamma_CO2,pi/2)); %corresponding...
@@ -29,7 +30,7 @@ plotPolar(Mt,gamma_CH4,ny);
 
 %plot incident wave pressure jump
 deltai=atan(sqrt(tanDefSq(xi,Mi,gamma_CO2)));
-semilogy([-1.1*deltai,1.1*deltai],[xi,xi],'--')
+semilogy(180/pi*deltai*[-1.1,1.1],[xi,xi],'--')
 
 %plot reflected shock polar
 hold on
@@ -44,4 +45,5 @@ xlabel('\delta (rad)')
 ylabel('\xi')
 xi_lim_CH4=xiLim(Mt,gamma_CH4);
 ylim([1,1.1*xi_lim_CH4])
+set(gca,'yscale','log')
 hold off

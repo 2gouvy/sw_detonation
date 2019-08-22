@@ -1,4 +1,4 @@
-function [before_transition,Msj]=isBeforeFPRToTNR(xi_i,omega_rad,gamma_I,...
+function [before_transition,Msj,Mst,Msi]=isBeforeFPRToTNR(xi_i,omega_rad,gamma_I,...
     gamma_II,mu_I,mu_II,ny,varargin)
     %Determines if FPR to TNR transition was made
     %Inputs:
@@ -21,7 +21,7 @@ function [before_transition,Msj]=isBeforeFPRToTNR(xi_i,omega_rad,gamma_I,...
         end
     end
     Msi=sqrt(xiToSqMach(xi_i,gamma_I,pi/2)); %incident shock Mach
-    M1i=Msi/sin(omega_rad); %incident free stream Mach
+    Mi=Msi/sin(omega_rad); %incident free stream Mach
 
     c=(gamma_II+1)/(gamma_I+1)*sqrt(temp_ratio*(gamma_I*mu_II)...
         /(gamma_II*mu_I))*(Msi^2-1)/Msi;
@@ -43,13 +43,13 @@ function [before_transition,Msj]=isBeforeFPRToTNR(xi_i,omega_rad,gamma_I,...
     if isempty(a)
         before_transition=true;
     else
-        i_dev=atan(sqrt(tanDefSq(xi_i,M1i,gamma_I)));
-        M1r=sqrt(postShockMachSq(xi_i,M1i,gamma_I));
+        i_dev=atan(sqrt(tanDefSq(xi_i,Mi,gamma_I)));
+        M1r=sqrt(postShockMachSq(xi_i,Mi,gamma_I));
         min_r_dev=i_dev-deltaMax(M1r,gamma_I); %minimum of r deviation
         Msj=a(1);
         xi_j=((1-gamma_I)+2*gamma_I*Msj^2)/(1+gamma_I);
-        j_dev=atan(sqrt(tanDefSq(xi_j,M1i,gamma_I)));
-        M1k=sqrt(postShockMachSq(xi_j,M1i,gamma_I));
+        j_dev=atan(sqrt(tanDefSq(xi_j,Mi,gamma_I)));
+        M1k=sqrt(postShockMachSq(xi_j,Mi,gamma_I));
         max_k_dev=-j_dev+deltaMax(M1k,gamma_I); %max of k deviation
         if max_k_dev<min_r_dev
             before_transition=false;

@@ -115,28 +115,32 @@ txt="Computing FPR-TNR boundary, this may take a while";
 txt
 nchis_tnr=100; %number of points on chi axis
 nys_tnr=30; %number of points in computed polars
-chis_FPR_TNR=linspace(.34,1,nchis_tnr); %chi values
+chis_FPR_TNR=linspace(1e-5,1,nchis_tnr); %chi values
 omegas_FPR_TNR=zeros(1,nchis_tnr);%pre-allocated omega array
 Msj=0; %j-wave Mach initialization
 fpr_tnr_boundary_precision=.01; %dichotomy termination threshold
 for i=1:nchis_tnr
     solve_Msj_eq=true;
-    omega_inf_tnr=0;omega_sup_tnr=90;
-    while omega_sup_tnr-omega_inf_tnr>fpr_tnr_boundary_precision
-        next_omega=(omega_sup_tnr+omega_inf_tnr)/2;
-        [is_before_trans,Msj]=isBeforeFPRToTNR(1/chis_FPR_TNR(i),pi/180*next_omega,...
+    omegai_inf_tnr=0;omegai_sup_tnr=90;
+    while omegai_sup_tnr-omegai_inf_tnr>fpr_tnr_boundary_precision
+        next_omega=(omegai_sup_tnr+omegai_inf_tnr)/2;
+        [is_before_trans,Msj,Mst,Msi]=isBeforeFPRToTNR(1/chis_FPR_TNR(i),pi/180*next_omega,...
              gamma_I,gamma_II,mu_I,mu_II,nys_tnr,solve_Msj_eq,Msj);
         if solve_Msj_eq %Msj is only computed at the beginning...
                 %... of the dichotomy
             solve_Msj_eq=false;
         end
         if is_before_trans
-            omega_inf_tnr=next_omega;
+            omegai_inf_tnr=next_omega;
         else
-            omega_sup_tnr=next_omega;
+            omegai_sup_tnr=next_omega;
         end
     end
-    omegas_FPR_TNR(i)=omega_inf_tnr;
+    omegai=omegai_inf_tnr;
+    M1j=Mst*sqrt(gamma_II*mu_I/(gamma_I*mu_II));
+    ki=double(180/pi*(-asin(Msj/M1j)+asin(Msj/Msi*sin(pi/180*omegai))))
+    omega=ki+omegai;
+    omegas_FPR_TNR(i)=omega;
 end
 
 limits_computation_time=cputime-limits_computation_time %stopping timer
@@ -151,15 +155,26 @@ plot(omegas_RRR_BPR,chis_RRR_BPR) %ploting RRR<->BPR limit
 hold on
 plot(omegas_BPR_NFR,chis_BPR_NFR) %ploting BPR<->NFR lim
 hold on
-plot(omegas_FPR_TNR,chis_FPR_TNR) %ploting FPR<->TNR lim
+plot(omegas_FPR_TNR(2:end),chis_FPR_TNR(2:end)) %ploting FPR<->TNR lim
 hold on
 plot(omegas_TNR_LSR(2:end),chis_TNR_LSR(2:end))  %ploting TNR<->LSR lim
+
+Ar_to_He_sim_results_data;
+hold on
+scatter(RRE_sims(:,3),RRE_sims(:,1))
+hold on
+scatter(BPR_sims(:,3),BPR_sims(:,1),'r')
+hold on
+scatter(FPR_sims(:,3),FPR_sims(:,1),'MarkerEdgeColor',[1,.5,0])
+hold on
+scatter(TMR_sims(:,3),TMR_sims(:,1),'m')
 legends={"RRE->... (graphical resolution)",...
     "RRR<->BPR","BPR<->FNR","FPR<->TNR",...
-    "TNR<->LSR"};
+    "TNR<->LSR","RRE sims","BPR sims",...
+    "FPR sims","TNR sims"};
 
 legend(legends,'Location','eastoutside')
-xlabel("\omega (deg)")
+xlabel("$\omega_i$ (deg)",'interpreter','latex')
 ylabel("\chi")
 title(['Computed boundaries for slow-fast ' name_I '->' name_II ' refraction'])
 xlim([15,90])
@@ -181,12 +196,12 @@ plot(omegas_RRR_BPR,incident_Mach_shock_RRR_BPR) %ploting RRR<->BPR limit
 hold on
 plot(omegas_BPR_NFR,incident_Mach_shock_BPR_NFR) %ploting BPR<->NFR lim
 hold on
-plot(omegas_FPR_TNR,incident_Mach_shock_FPR_TNR) %ploting FPR<->TNR lim
+plot(omegas_FPR_TNR(2:end),chis_FPR_TNR(2:end)) %ploting FPR<->TNR lim
 hold on
 plot(omegas_TNR_LSR(2:end),incident_Mach_shock_TNR_LSR)  %ploting TNR<->LSR lim
 
 legend(legends,'Location','eastoutside')
-xlabel("\omega (deg)")
+xlabel("$\omega_i$ (deg)",'interpreter','latex')
 ylabel("Msh")
 title(['Computed boundaries for slow-fast ' name_I '->' name_II ' refraction'])
 xlim([15,90])
