@@ -1,12 +1,6 @@
 %%Computing boundaries between different refraction systems
     %%...for Ar->He slow-fast refraction  in...
     %%... interface angle- incident pressure jump plane.
-    %%A similar graph can be found in Abd-El-Fattah's and L. F. ...
-    %%... Henderson 1978 paper Shock Waves at slow-fast gas interface, fig
-    %%.. 13.
-    %%The computed boundaries are compared with the article's data and we
-    %%... can observe an overall good agreement, except for the FPR-TNR...
-    %%... boundary.
 
 limits_computation_time=cputime;%initialising timer for computation time
 
