@@ -1,0 +1,2 @@
+- CO2_to_He_conds/H2_O2_to_He.m describe experimental conditions for CO2 to He and H2 O2 to He refractions.
+- execute particles_RRE_example to get temperature, pressure and specific volume profiles.
