@@ -54,7 +54,7 @@ function [before_transition,Msj,Mst,Msi]=isBeforeFPRToTNR(xi_i,omega_rad,gamma_I
         if max_k_dev<min_r_dev
             before_transition=false;
         else
-            [xis_k,deltas_k]=getPolar(M1k,gamma_I,ny,2,xi_j,j_dev);
+            [xis_k,deltas_k]=getPolar(M1k,gamma_I,ny,2,xi_j,-j_dev);
             [xis_r,deltas_r]=getPolar(M1r,gamma_I,ny,2,xi_i,i_dev);
             i=ny+2;
             xi_k=xis_k(i);delta_k=deltas_k(i);
