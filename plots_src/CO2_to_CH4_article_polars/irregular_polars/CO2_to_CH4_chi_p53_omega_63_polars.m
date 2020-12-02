@@ -49,7 +49,7 @@ if ~(isempty(a)) %checking if slution was found
     xi_j=((1-gamma_I)+2*gamma_I*Msj^2)/(1+gamma_I); %j pressure jump
     M1k=sqrt(postShockMachSq(xi_j,M1i,gamma_I)); %k shock Mach
     j_dev=atan(sqrt(tanDefSq(xi_j,M1i,gamma_I))); %j deviation
-    plotPolar(M1k,gamma_II,ny,2,xi_j,-j_dev); %plotting k polar
+    plotPolar(M1k,gamma_I,ny,2,xi_j,-j_dev); %plotting k polar
     
     fid=fopen('prec_pol4.txt','r');
     extract_plots;
